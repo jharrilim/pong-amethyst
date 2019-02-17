@@ -1,23 +1,17 @@
 extern crate amethyst;
 
 use amethyst::prelude::*;
+use amethyst::core::transform::TransformBundle;
 use amethyst::renderer::{
-    DisplayConfig, DrawFlat2D, Event, Pipeline,
-    RenderBundle, Stage, VirtualKeyCode
+    DisplayConfig, DrawFlat2D, Pipeline,
+    RenderBundle, Stage
 };
 
+mod pong;
+
+use crate::pong::Pong;
+
 use amethyst::utils::application_root_dir;
-
-pub struct Pong;
-
-/**
- * Used by Amethyst's state machine for starting, stopping, and updating the game.
- *
- */
-impl SimpleState for Pong {
-
-}
-
 
 // Return result so we can use ? operator
 fn main() -> amethyst::Result<()> {
@@ -40,7 +34,8 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
-        )?;
+        )?
+        .with_bundle(TransformBundle::new())?;
 
     let mut game = Application::new("./", Pong, game_data)?;
 
