@@ -1,12 +1,19 @@
-
-
 use amethyst::core::Transform;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
 
+use crate::pong::{
+    ARENA_HEIGHT,
+};
 
-// You'll have to mark PADDLE_HEIGHT as public in pong.rs
-use crate::pong::{Paddle, Side, ARENA_HEIGHT, PADDLE_HEIGHT};
+use crate::components::paddle::{
+    Paddle,
+    Side
+};
+
+use crate::entities::paddle::{
+    PADDLE_HEIGHT,
+};
 
 pub struct PaddleSystem;
 

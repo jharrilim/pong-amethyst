@@ -2,6 +2,8 @@ extern crate amethyst;
 
 mod pong;
 mod systems;
+mod components;
+mod entities;
 
 use amethyst::prelude::*;
 use amethyst::core::transform::TransformBundle;
@@ -12,7 +14,6 @@ use amethyst::renderer::{
 };
 
 use systems::paddle::PaddleSystem;
-
 use pong::Pong;
 
 use amethyst::utils::application_root_dir;
