@@ -14,9 +14,9 @@ use amethyst::renderer::{
 };
 
 use systems::{
-    paddle::PaddleSystem,
-    ball_movement::BallMovementSystem,
-    bounce::BounceSystem
+    PaddleSystem,
+    BallMovementSystem,
+    BounceSystem,
 };
 use pong::Pong;
 
@@ -57,11 +57,8 @@ fn main() -> amethyst::Result<()> {
         )?
         .with(PaddleSystem, "paddle_system", &["input_system"])
         .with(BallMovementSystem, "ball_system", &[])
-        .with(
-            BounceSystem,
-            "collision_system",
-            &["paddle_system", "ball_system"],
-        );
+        .with(BounceSystem, "collision_system", &["paddle_system", "ball_system"])
+        .with(systems::WinnerSystem, "winner_system", &["ball_system"]);
 
     let mut game = Application::new("./", Pong, game_data)?;
 
