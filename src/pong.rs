@@ -1,8 +1,10 @@
 use amethyst::assets::{AssetStorage, Loader};
+use amethyst::input::is_key_down;
 use amethyst::prelude::*;
 use amethyst::renderer::{
     PngFormat, SpriteSheet, SpriteSheetFormat,
     SpriteSheetHandle, Texture, TextureMetadata,
+    VirtualKeyCode
 };
 
 use crate::entities::{
@@ -12,7 +14,7 @@ use crate::entities::{
     scoreboard::initialise_scoreboard
 };
 
-use crate::components::ball::Ball;
+use crate::states::paused::PausedState;
 
 pub const ARENA_HEIGHT: f32 = 100.0;
 pub const ARENA_WIDTH: f32 = 100.0;
@@ -29,19 +31,23 @@ impl SimpleState for Pong {
         let world = data.world;
         let spritesheet_handle = load_sprite_sheet(world);
 
-        // For a Component to be used, there must be a Storage<ComponentType>
-        // resource set up in the World.
-        // world.register::<Paddle>(); // This can be handled implicitly when initializing
-        world.register::<Ball>(); // <- add this line temporarily
-
-        initialise_ball(world, spritesheet_handle.clone()); // <- add this line
-        initialise_paddles(world, spritesheet_handle);
+        initialise_ball(world, spritesheet_handle.clone());
+        initialise_paddles(world, spritesheet_handle.clone());
         initialise_camera(world);
         initialise_scoreboard(world);
     }
 }
 
-
+impl EmptyState for Pong {
+    fn handle_event(&mut self, _data: StateData<()>, event: StateEvent) -> EmptyTrans {
+        if let StateEvent::Window(event) = &event {
+            if is_key_down(&event, VirtualKeyCode::Space) {
+                return Trans::Push(Box::new(PausedState));
+            }
+        }
+        Trans::None
+    }
+}
 
 fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
     // Load the sprite sheet necessary to render the graphics.
@@ -52,7 +58,7 @@ fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
         // Asset loader; can load .obj, .png, etc
         loader.load(
-            "texture/pong_spritesheet.png",
+            "assets/textures/pong_spritesheet.png",
             PngFormat,
             TextureMetadata::srgb_scale(),
             (),
@@ -62,7 +68,7 @@ fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
 
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
-        "texture/pong_spritesheet.ron", // Here we load the associated ron file
+        "assets/textures/pong_spritesheet.ron", // Here we load the associated ron file
         SpriteSheetFormat,
         texture_handle, // We pass it the handle of the texture we want it to use
         (),

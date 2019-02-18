@@ -4,6 +4,7 @@ mod pong;
 mod systems;
 mod components;
 mod entities;
+mod states;
 
 use amethyst::prelude::*;
 use amethyst::config::ConfigError;
@@ -31,7 +32,7 @@ fn main() -> amethyst::Result<()> {
     // Show logs during runtime
     amethyst::start_logger(Default::default());
     let render_bundle = {
-        let path = format!("{}/resources/display_config.ron", application_root_dir());
+        let path = format!("{}/assets/config/display_config.ron", application_root_dir());
         let pipe = Pipeline::build()
             .with_stage(
                 Stage::with_backbuffer()
@@ -52,13 +53,12 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(UiBundle::<String, String>::new())?
         .with(PaddleSystem, "paddle_system", &["input_system"])
         .with(BallMovementSystem, "ball_system", &[])
-        .with(BounceSystem, "collision_system", &["paddle_system", "ball_system"])
+        .with(BounceSystem, "bounce_system", &["paddle_system", "ball_system"])
         .with(systems::WinnerSystem, "winner_system", &["ball_system"]);
 
     let mut game = Application::new("./", Pong, game_data)?;
 
     game.run();
-
     Ok(())
 }
 
@@ -66,7 +66,7 @@ fn input_bundle() -> Result<InputBundle<String, String>, ConfigError> {
     InputBundle::<String, String>::new()
         .with_bindings_from_file(
             format!(
-                "{}/resources/bindings_config.ron",
+                "{}/assets/config/bindings_config.ron",
                 application_root_dir()
             )
         )

@@ -8,7 +8,7 @@ use crate::components::scoreboard::*;
 
 pub fn initialise_scoreboard(world: &mut World) {
     let font = world.read_resource::<Loader>().load(
-        "font/square.ttf",
+        "assets/font/square.ttf",
         TtfFormat,
         Default::default(),
         (),
