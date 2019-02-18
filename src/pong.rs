@@ -7,8 +7,11 @@ use amethyst::renderer::{
 
 use crate::entities::{
     paddle::{initialise_paddles},
-    camera::{initialise_camera}
+    camera::{initialise_camera},
+    ball::{initialise_ball}
 };
+
+use crate::components::ball::Ball;
 
 pub const ARENA_HEIGHT: f32 = 100.0;
 pub const ARENA_WIDTH: f32 = 100.0;
@@ -28,6 +31,9 @@ impl SimpleState for Pong {
         // For a Component to be used, there must be a Storage<ComponentType>
         // resource set up in the World.
         // world.register::<Paddle>(); // This can be handled implicitly when initializing
+        world.register::<Ball>(); // <- add this line temporarily
+
+        initialise_ball(world, spritesheet_handle.clone()); // <- add this line
         initialise_paddles(world, spritesheet_handle);
         initialise_camera(world);
     }
