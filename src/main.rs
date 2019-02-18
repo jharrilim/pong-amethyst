@@ -1,15 +1,19 @@
 extern crate amethyst;
 
+mod pong;
+mod systems;
+
 use amethyst::prelude::*;
 use amethyst::core::transform::TransformBundle;
+use amethyst::input::InputBundle;
 use amethyst::renderer::{
     DisplayConfig, DrawFlat2D, Pipeline,
     RenderBundle, Stage
 };
 
-mod pong;
+use systems::paddle::PaddleSystem;
 
-use crate::pong::Pong;
+use pong::Pong;
 
 use amethyst::utils::application_root_dir;
 
@@ -35,7 +39,18 @@ fn main() -> amethyst::Result<()> {
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
         )?
-        .with_bundle(TransformBundle::new())?;
+        .with_bundle(TransformBundle::new())?
+        .with_bundle(
+            // Parameter types correspond to types of axes names
+            InputBundle::<String, String>::new()
+                .with_bindings_from_file(
+                    format!(
+                        "{}/resources/bindings_config.ron",
+                        application_root_dir()
+                    )
+                )?
+        )?
+        .with(PaddleSystem, "paddle_system", &["input_system"]);
 
     let mut game = Application::new("./", Pong, game_data)?;
 
