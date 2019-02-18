@@ -4,7 +4,8 @@ use amethyst::{
     ui::UiText,
 };
 
-use crate::pong::{ARENA_WIDTH};
+use crate::states::pong::{ARENA_WIDTH};
+
 use crate::components::{
     ball::Ball,
     scoreboard::*

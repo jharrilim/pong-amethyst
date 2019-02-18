@@ -6,7 +6,7 @@ use amethyst::renderer::{
     Flipped
 };
 
-use crate::pong::{
+use crate::states::pong::{
     ARENA_WIDTH, ARENA_HEIGHT
 };
 

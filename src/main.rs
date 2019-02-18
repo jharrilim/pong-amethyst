@@ -1,6 +1,5 @@
 extern crate amethyst;
 
-mod pong;
 mod systems;
 mod components;
 mod entities;
@@ -22,7 +21,7 @@ use systems::{
     BounceSystem,
 };
 
-use pong::Pong;
+use states::pong::Pong;
 
 use amethyst::utils::application_root_dir;
 

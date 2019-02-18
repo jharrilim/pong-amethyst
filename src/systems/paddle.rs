@@ -2,7 +2,7 @@ use amethyst::core::Transform;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
 
-use crate::pong::{
+use crate::states::pong::{
     ARENA_HEIGHT,
 };
 

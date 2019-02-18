@@ -5,7 +5,7 @@ use amethyst::renderer::{
     Projection,
 };
 
-use crate::pong::{ARENA_WIDTH, ARENA_HEIGHT};
+use crate::states::pong::{ARENA_WIDTH, ARENA_HEIGHT};
 
 pub fn initialise_camera(world: &mut World) {
     let mut transform = Transform::default();

@@ -6,7 +6,7 @@ use amethyst::{
 use crate::components::ball::Ball;
 use crate::components::paddle::{Paddle, Side};
 
-use crate::pong::ARENA_HEIGHT;
+use crate::states::pong::ARENA_HEIGHT;
 
 pub struct BounceSystem;
 
