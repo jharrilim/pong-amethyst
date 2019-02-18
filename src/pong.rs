@@ -6,9 +6,10 @@ use amethyst::renderer::{
 };
 
 use crate::entities::{
-    paddle::{initialise_paddles},
-    camera::{initialise_camera},
-    ball::{initialise_ball}
+    paddle::initialise_paddles,
+    camera::initialise_camera,
+    ball::initialise_ball,
+    scoreboard::initialise_scoreboard
 };
 
 use crate::components::ball::Ball;
@@ -36,6 +37,7 @@ impl SimpleState for Pong {
         initialise_ball(world, spritesheet_handle.clone()); // <- add this line
         initialise_paddles(world, spritesheet_handle);
         initialise_camera(world);
+        initialise_scoreboard(world);
     }
 }
 
