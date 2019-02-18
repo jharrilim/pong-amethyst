@@ -1,0 +1,48 @@
+dist: trusty
+
+sudo: required
+
+cache:
+  - cargo
+
+branches:
+  only:
+    - master
+
+notifications:
+  email: false
+
+services:
+  - docker
+
+install:
+  - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
+  - (test -x $HOME/.cargo/bin/mdbook || cargo install --vers "^0.2" mdbook)
+  - cargo install-update -a
+
+jobs:
+  include:
+    - stage: "Build"
+      name: "Stable"
+      rust: stable
+      script: cargo build
+    - name: "Nightly"
+      rust: nightly
+      script: cargo build
+    - stage: "Test"
+      name: "Debian 8"
+      script:
+        - echo 0
+    - name: "Debian 9"
+      script:
+        - echo 0
+      after_success:
+        - mdbook build && mdbook test
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN
+        local-dir: docs
+        keep-history: false
+        on:
+          branch: master
